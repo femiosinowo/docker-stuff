@@ -1,0 +1,31 @@
+weba:
+  #build: .
+  image: my_web_app:v1
+  expose:
+    - 8080
+
+webb:
+  #build: .
+  image: my_web_app:v2
+  expose:
+    - 8080
+
+webc:
+  #build: .
+  image: my_web_app:v3
+  expose:
+    - 8080
+
+haproxy:
+  image: tutum/haproxy:latest
+  links:
+   - weba
+   - webb
+   - webc
+  ports:
+   - "80:80"
+   - "70:70"
+
+  expose:
+   - "80"
+   - "70"

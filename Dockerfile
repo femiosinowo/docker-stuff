@@ -1,5 +1,5 @@
 FROM tomcat
-MAINTAINER GCIO DevOps "fosinowo@governmentcio.com"
+MAINTAINER GCIO DevOps "fosinowo@governmentcio.org"
 
 #ADD src/ /src
 #WORKDIR /src

@@ -1,0 +1,29 @@
+#
+# Service Discovery - Consul
+#
+consul:
+  command: -server -advertise 10.0.0.244 -join 10.0.0.247
+  image: progrium/consul:latest
+  ports:
+  - "8300:8300"
+  - "8301:8301"
+  - "8301:8301/udp"
+  - "8302:8302"
+  - "8302:8302/udp"
+  - "8400:8400"
+  - "8500:8500"
+  - "8600:53/udp"
+  - "172.17.0.1:53:53/udp"
+  restart: always
+
+#
+# Service Discovery - Registrator
+#
+registrator:
+  command: -ip=10.0.0.244 consul://10.0.0.244:8500 -e SERVICE_IGNORE=always
+  image: gliderlabs/registrator
+  links:
+  - consul
+  volumes:
+  - "/var/run/docker.sock:/tmp/docker.sock"
+  restart: always

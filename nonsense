@@ -1,0 +1,37 @@
+docker-machine create --driver amazonec2 --amazonec2-private-address-only=true \
+swarm-consul1-devOps
+
+
+eval $(docker-machine env swarm-consul-devOps)
+
+ 
+
+SWARM_TOKEN=$(docker run swarm create)
+
+docker-machine create --driver amazonec2 --amazonec2-private-address-only true \
+--swarm \
+--swarm-master \
+--swarm-discovery token://f51fb61070e77dd6686c3a5abc6babff \
+swarm-master-devOps
+
+eval $(docker-machine env swarm-master-devOps)
+ RUN both consul and registrator using compose 
+
+docker-machine create --driver amazonec2 --amazonec2-private-address-only true \
+--swarm \
+--swarm-discovery token://f51fb61070e77dd6686c3a5abc6babff \
+swarm-node00-devOps
+eval $(docker-machine env swarm-node00-devOps)
+ RUN both consul and registrator using compose 
+ 
+ 
+
+ eval $(docker-machine env --swarm swarm-master-devOps) 
+ 
+ 
+ 
+ 
+ 
+ docker run -d -e constraint:node==swarm-node00-devOps --net=host --volume=/var/run/docker.sock:/tmp/docker.sock gliderlabs/registrator:latest consul://52.23.223.62:8500/ 
+ docker run -d -e constraint:node==swarm-node01-devOps --net=host --volume=/var/run/docker.sock:/tmp/docker.sock gliderlabs/registrator:latest consul://52.23.223.62:8500/ 
+ docker run -d -e constraint:node==swarm-master-devOps --net=host --volume=/var/run/docker.sock:/tmp/docker.sock gliderlabs/registrator:latest consul://52.23.223.62:8500/
